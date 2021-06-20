@@ -1,0 +1,86 @@
+springboot总结
+
+The following listing shows a typical layout:（经典布局）
+	com
+	 +- example
+		 +- myapplication
+			 +- Application.java
+			 |
+			 +- customer
+			 |   +- Customer.java
+			 |   +- CustomerController.java
+			 |   +- CustomerService.java
+			 |   +- CustomerRepository.java
+			 |
+			 +- order
+				 +- Order.java
+				 +- OrderController.java
+				 +- OrderService.java
+				 +- OrderRepository.java
+				 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------
+配置类：
+	1、导入其他配置类：
+		您无需将所有内容都@Configuration放在一个类中。所述@Import注释可以用于导入额外的配置类。另外，您可以@ComponentScan用来自动拾取所有Spring组件，包括@Configuration类。
+		@Import({ MyConfig.class, MyAnotherConfig.class })
+	2、导入XML配置：
+		如果绝对必须使用基于XML的配置，我们建议您仍然从一个@Configuration类开始。然后，您可以使用@ImportResource批注来加载XML配置文件。
+------------------------------------------------------------------------------------------------------------------------------------------------------------------
+禁用特定的自动配置类:
+		如果发现正在应用不需要的特定自动配置类，则可以使用exclude属性@SpringBootApplication来禁用它们，如以下示例所示：
+	import org.springframework.boot.autoconfigure.*;
+	import org.springframework.boot.autoconfigure.jdbc.*;
+
+	@SpringBootApplication(exclude={DataSourceAutoConfiguration.class})
+	public class MyApplication {
+	}			如果该类不在类路径中，则可以使用excludeName注释的属性，并指定完全限定的名称。如果您喜欢使用@EnableAutoConfiguration而不是@SpringBootApplication，exclude并且excludeName也可以使用。	最后，您还可以使用spring.autoconfigure.exclude属性来控制要排除的自动配置类的列表。
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+延迟初始化:
+		SpringApplication允许延迟地初始化应用程序。启用惰性初始化后，将根据需要创建bean，而不是在应用程序启动期间创建bean。因此，启用延迟初始化可以减少应用程序启动所花费的时间。
+	在Web应用程序中，启用延迟初始化将导致许多与Web相关的Bean直到收到HTTP请求后才被初始化。
+		可以使用lazyInitializationon方法SpringApplicationBuilder或setLazyInitializationon方法以编程方式启用延迟初始化SpringApplication。
+	另外，可以使用spring.main.lazy-initialization以下示例中所示的属性来启用它
+	
+	spring:
+	  main:
+		lazy-initialization: true
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+导入其他数据:
+	spring:
+	  application:
+		name: "myapp"
+	  config:
+		import: "optional:file:./dev.properties"
+	my:
+	  property: value
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
